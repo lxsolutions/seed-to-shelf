@@ -1,0 +1,19 @@
+
+
+
+# Python
+.venv/
+__pycache__/
+
+# Docker
+docker-compose*.override.yml
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Temporary files
+*.swp
+*.swo
+
+

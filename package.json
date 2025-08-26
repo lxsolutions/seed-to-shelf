@@ -1,0 +1,15 @@
+
+
+{
+  "name": "seed-to-shelf",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Seed to Shelf development'",
+    "build": "echo 'Building Seed to Shelf'",
+    "start": "echo 'Starting Seed to Shelf'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
+
