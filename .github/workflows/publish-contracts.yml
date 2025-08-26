@@ -1,0 +1,103 @@
+
+
+
+
+
+
+
+
+
+
+
+
+name: Publish Contracts
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Matches vX.Y.Z format
+      - 'v*.*.*-*' # Matches pre-release versions like v1.0.0-beta.1
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts/typescript
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm install --frozen-lockfile
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-pypi:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts/python
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install build twine
+
+      - name: Build package
+        run: python -m build --sdist --wheel .
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: twine upload dist/*
+
+  validate-schemas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate JSON Schemas
+        working-directory: contracts/schemas/json
+        run: |
+          for schema in *.json; do
+            echo "Validating $schema..."
+            jq empty "$schema" > /dev/null 2>&1 || (echo "Invalid JSON in $schema"; exit 1)
+          done
+
+      - name: Validate AsyncAPI
+        working-directory: contracts/events
+        run: |
+          if [ -f asyncapi.yaml ]; then
+            echo "Validating asyncapi.yaml..."
+            jq empty asyncapi.yaml > /dev/null 2>&1 || (echo "Invalid YAML in asyncapi.yaml"; exit 1)
+          fi
+
+
+
+
+
+
+
+
+
