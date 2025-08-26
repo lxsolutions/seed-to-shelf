@@ -1,0 +1,44 @@
+
+
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com/'
+      - run: npm install --legacy-peer-deps
+        working-directory: ./contracts
+      - run: npm publish
+        working-directory: ./contracts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-pypi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - run: pip install poetry
+      - run: poetry build
+        working-directory: ./contracts/python
+      - name: Publish to PyPI
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          poetry config pypi-token.pypi $PYPI_API_TOKEN
+          poetry publish --repository pypi
+

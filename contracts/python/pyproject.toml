@@ -1,0 +1,14 @@
+
+[tool.poetry]
+name = "s2s-contracts"
+version = "0.1.0"
+description = "Shared API & event schemas for Seed to Shelf platform (Python models)"
+authors = ["LX Solutions <info@lx-solutions.com>"]
+packages = [{include = "pydantic_models.py"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

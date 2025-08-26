@@ -45,7 +45,7 @@ class OrderStatusChange(BaseModel):
     order_id: UUID
     status: str = Field(
         ...,
-        regex="^(PENDING|PREPARING|READY|DELIVERED|CANCELLED)$",
+        pattern="^(PENDING|PREPARING|READY|DELIVERED|CANCELLED)$",
         description="Order status"
     )
     timestamp: datetime

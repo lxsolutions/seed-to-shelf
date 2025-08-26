@@ -1,0 +1,26 @@
+
+
+
+# Node.js
+node_modules/
+dist/
+
+# Python
+*.pyc
+__pycache__/
+.venv/
+.poetry
+
+# IDE files
+.vscode/
+.idea/
+
+# MacOS
+.DS_Store
+
+# Build artifacts
+build/
+*.tgz
+*.egg-info/
+
+
