@@ -1,0 +1,47 @@
+
+
+
+
+
+
+{
+  "name": "@s2s/contracts",
+  "version": "0.1.0",
+  "description": "Shared API & event schemas for Seed to Shelf platform",
+  "main": "dist/index.js",
+  "types": "typescript/index.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint . --ext .js,.ts",
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lxsolutions/seed-to-shelf.git",
+    "directory": "contracts"
+  },
+  "keywords": [
+    "food", "supply-chain", "traceability", "events", "schemas"
+  ],
+  "author": "LX Solutions",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lxsolutions/seed-to-shelf/issues"
+  },
+  "homepage": "https://github.com/lxsolutions/seed-to-shelf#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.14.8",
+    "typescript": "^5.6.3",
+    "zod": "^3.23.8"
+  }
+}
+
+
+
+
+
