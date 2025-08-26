@@ -1,0 +1,138 @@
+
+
+
+
+
+
+
+
+asyncapi: '2.6.0'
+info:
+  title: Seed to Shelf Contracts
+  version: '1.0.0'
+  description: Shared event contracts between S2S and CG
+
+servers:
+  redpanda:
+    url: redpanda:9093
+    protocol: kafka-secure
+    security:
+      - saslScram: []
+
+security:
+  - saslScram: []
+
+topics:
+  supply.lot.created:
+    description: A new lot has been created in the traceability system
+    messages:
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/LotCreated'
+
+  supply.lot.updated:
+    description: An existing lot has been updated
+    messages:
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/LotUpdated'
+
+  supply.product.ready_meal.published:
+    description: A new ready meal product is available for ordering
+    messages:
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ReadyMealPublished'
+
+  orders.status_changed:
+    description: An order status has changed (for S2S demand tracking)
+    messages:
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderStatusChanged'
+
+components:
+  schemas:
+
+    LotCreated:
+      type: object
+      properties:
+        lot_id:
+          type: string
+          description: Unique identifier for the lot
+        product_code:
+          type: string
+          description: Product code (GS1-like)
+        quantity:
+          type: integer
+          description: Quantity in units
+        created_at:
+          type: string
+          format: date-time
+
+    LotUpdated:
+      type: object
+      properties:
+        lot_id:
+          type: string
+          description: Unique identifier for the lot
+        product_code:
+          type: string
+          description: Product code (GS1-like)
+        quantity:
+          type: integer
+          description: Quantity in units
+        updated_at:
+          type: string
+          format: date-time
+
+    ReadyMealPublished:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: Unique identifier for the ready meal
+        name:
+          type: string
+          description: Product name
+        sku:
+          type: string
+          description: Stock keeping unit (GS1-like)
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        price:
+          type: number
+          format: float
+
+    Ingredient:
+      type: object
+      properties:
+        name:
+          type: string
+        lot_id:
+          type: string
+        quantity:
+          type: integer
+
+    OrderStatusChanged:
+      type: object
+      properties:
+        order_id:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, PREPARING, READY, DELIVERED, CANCELLED]
+        timestamp:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    saslScram:
+      type: scramSha256
+      description: SASL/SCRAM authentication for Kafka
+
+
+
+

@@ -1,0 +1,35 @@
+
+
+
+
+
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Lot",
+  "description": "A production lot in the traceability system",
+  "type": "object",
+  "properties": {
+    "lot_id": {
+      "type": "string",
+      "description": "Unique identifier for the lot"
+    },
+    "product_code": {
+      "type": "string",
+      "description": "Product code (GS1-like)"
+    },
+    "quantity": {
+      "type: integer",
+      "description": "Quantity in units"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["lot_id", "product_code"]
+}
+
+
+
+
