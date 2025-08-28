@@ -1,0 +1,53 @@
+
+
+# Node.js
+node_modules/
+.pnp
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+.env
+.venv/
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
+
+# Logs
+logs
+*.log
+
+# Coverage reports
+coverage/
+.htmlcov/
+
+# Distribution folders
+dist/
+build/
+out/
+
+# Dependency directories
+.pnpm-store/
+
+# Next.js build output
+.next/
+
+# Expo
+expo/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# macOS files
+.DS_Store
+
