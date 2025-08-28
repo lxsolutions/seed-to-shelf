@@ -1,0 +1,71 @@
+
+
+
+
+
+
+
+
+
+
+
+{
+  "jurisdiction_code": "CA_SAN_MATEO_MEHKO",
+  "name": "San Mateo County MEHKO Program",
+  "description": "Microenterprise Home Kitchen Operations regulations for San Mateo County, CA",
+  "rules": [
+    {
+      "rule_id": "HOME_KITCHEN_ALLOWED",
+      "type": "KITCHEN_TYPE",
+      "allowed_types": ["HOME"],
+      "message": "Only HOME kitchens are allowed under the MEHKO program."
+    },
+    {
+      "rule_id": "PERMIT_REQUIRED",
+      "type": "PERMIT",
+      "required_permits": ["MEHKO"],
+      "message": "A valid MEHKO permit is required for home kitchen operations."
+    },
+    {
+      "rule_id": "COUNTY_BOUNDARY",
+      "type": "GEOGRAPHIC_RESTRICTION",
+      "boundary_type": "county",
+      "allowed_counties": ["San Mateo"],
+      "message": "Sales and deliveries are restricted to San Mateo County."
+    },
+    {
+      "rule_id": "DAILY_CAP",
+      "type": "SALES_LIMIT",
+      "daily_cap_amount": 1000.0,
+      "message": "Daily sales are limited to $1,000 under MEHKO regulations."
+    },
+    {
+      "rule_id": "FOOD_TYPES_ALLOWED",
+      "type": "FOOD_RESTRICTION",
+      "allowed_food_types": ["hot_meals", "prepared_foods"],
+      "message": "MEHKO permits allow hot meals and prepared foods."
+    }
+  ],
+  "permit_requirements": {
+    "MEHKO": {
+      "required_docs": [
+        {"type": "health_permit", "description": "San Mateo County Health Department permit"},
+        {"type": "business_license", "description": "City or county business license"}
+      ]
+    }
+  },
+  "links": {
+    "regulatory_info": "https://www.smchealth.org/mehko",
+    "application_form": "https://www.smchealth.org/forms/mehko-application"
+  }
+}
+
+
+
+
+
+
+
+
+
+

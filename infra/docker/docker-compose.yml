@@ -1,0 +1,144 @@
+
+
+
+
+version: '3.8'
+
+services:
+  # Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: s2c_postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: s2c
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    container_name: s2c_redis
+    ports:
+      - "6379:6379"
+
+  # Message broker (Redpanda)
+  redpanda:
+    image: docker.redpanda.com/vectorized/redpanda:v24.1.8
+    container_name: s2c_redpanda
+    command:
+      - redpanda
+      - start
+      - --smp
+      - '1'
+      - --reserve-memory
+      - 0M
+      - --overprovisioned
+      - --node-id
+      - '1'
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:9092,OUTSIDE://0.0.0.0:9094
+    ports:
+      - "9092:9092"
+      - "9644:9644"
+
+  # MinIO for file uploads (object storage)
+  minio:
+    image: minio/minio:latest
+    container_name: s2c_minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+  # Jaeger for tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: s2c_jaeger
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "14268:14268"
+      - "14250:14250"
+      - "9411:9411"
+
+  # API Service
+  api:
+    build:
+      context: ../services/api
+      dockerfile: Dockerfile
+    container_name: s2c_api
+    environment:
+      DATABASE_URL: postgresql://user:password@postgres:5432/s2c
+      REDIS_URL: redis://redis:6379/0
+      NATS_URL: nats://redpanda:4222
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+      - redpanda
+
+  # Traceability Service (FastAPI)
+  traceability:
+    build:
+      context: ../services/traceability
+      dockerfile: Dockerfile
+    container_name: s2c_traceability
+    environment:
+      DATABASE_URL: postgresql://user:password@postgres:5432/s2c
+      REDPANDA_BROKER: redpanda:9092
+    ports:
+      - "8001:8001"
+    depends_on:
+      - postgres
+
+  # Logistics Service (FastAPI)
+  logistics:
+    build:
+      context: ../services/logistics
+      dockerfile: Dockerfile
+    container_name: s2c_logistics
+    ports:
+      - "8002:8002"
+
+  # Farm Service (FastAPI)
+  farm:
+    build:
+      context: ../services/farm
+      dockerfile: Dockerfile
+    container_name: s2c_farm
+    environment:
+      DATABASE_URL: postgresql://user:password@postgres:5432/s2c
+    ports:
+      - "8003:8003"
+    depends_on:
+      - postgres
+
+  # Recommender Service (FastAPI)
+  recommender:
+    build:
+      context: ../services/recommender
+      dockerfile: Dockerfile
+    container_name: s2c_recommender
+    ports:
+      - "8004:8004"
+
+volumes:
+  postgres_data:
+
+
+
+
