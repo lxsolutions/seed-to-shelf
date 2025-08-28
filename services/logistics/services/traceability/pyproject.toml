@@ -1,0 +1,32 @@
+
+
+
+
+
+
+[tool.poetry]
+name = "s2c-traceability"
+version = "0.1.0"
+description = "FSMA 204 compliant traceability service for Seed to Chef platform"
+authors = ["OpenHands <openhands@all-hands.dev>"]
+packages = [{include = "models.py"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.2"
+pydantic = {extras = ["email"], version = "^2.7"}
+sqlalchemy = "^2.0"
+alembic = "^1.13.2"
+psycopg2-binary = "^2.9.9"
+
+[tool.poetry.group.dev.dependencies]
+uvicorn = "^0.28.0"
+pytest = "^8.2.0"
+httpx = "^0.27.0"
+mypy = "^1.11.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
