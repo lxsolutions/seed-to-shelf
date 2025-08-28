@@ -1,0 +1,17 @@
+
+
+# Default owners for the entire repository
+* @lxsolutions/core-team
+
+# Contract-specific owners
+/contracts/ @lxsolutions/contracts-team
+
+# Service-specific owners
+/services/traceability/ @lxsolutions/traceability-team
+/services/farm/ @lxsolutions/farm-team
+/services/logistics/ @lxsolutions/logistics-team
+/services/recommender/ @lxsolutions/recommender-team
+
+# Documentation owners
+/docs/ @lxsolutions/docs-team
+
